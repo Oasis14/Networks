@@ -235,7 +235,7 @@ int main (int argc, char * argv[])
 								printf("Transfer Progress: %d/%s \n",transfered,fileSize);
 								fwrite(buffer,sizeof(buffer),1,file);
 
-								if(transfered > transferSize){
+								if(transfered >= transferSize){
 									//tranfer is done exit loop
 									loop = 0;
 									//print message that file has been transfered

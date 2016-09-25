@@ -94,6 +94,7 @@ int main (int argc, char * argv[] )
 
 
 		char msg[MAXBUFFSIZE];
+		bzero(msg,sizeof(buffer));
 		if(!strncmp(buffer,"ls",2)){
 			printf("Runnning the ls command \n");
 			FILE *ls;

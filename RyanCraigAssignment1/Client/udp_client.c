@@ -21,6 +21,7 @@ void printUsage(){
 	printf("ls -Returns a list of Files in the server directiory. ls flags do not work \n");
 	printf("get <fileName> -Gets a file from server and saves it in client folder \n");
 	printf("put <fileName> -Puts a file from client to server \n");
+	printf("exit - quits the program for you. \n");
 }
 
 #define MAXBUFSIZE 512
@@ -83,8 +84,8 @@ int main (int argc, char * argv[])
 		printf(">");
 		int remote_length = sizeof(remote);
 		// receiving data set up
-		struct sockaddr_in from_addr;
-		int addr_length = sizeof(struct sockaddr);
+		//struct sockaddr_in from_addr;
+		//int addr_length = sizeof(struct sockaddr);
 		bzero(buffer,sizeof(buffer));
 
 
@@ -97,14 +98,14 @@ int main (int argc, char * argv[])
 			messageLength = sendto(sock, command, sizeof(command), 0,(struct sockaddr *) &remote, remote_length);
 
 			messageLength = recvfrom(sock, &buffer, sizeof(buffer), 0, (struct sockaddr *) &remote, &remote_length);
-			printf(" %s\n", buffer);
+			printf("%s\n", buffer);
 		}
 		//break the loop so the program ends
 		else if (!strncmp(command,"exit",4)){
 			close(sock);
 			true = 0;
 		}
-		else if (!strncmp(command,"put",3)){
+		else if (!strncmp(command,"put",3) && strlen(command)>=6){
 			printf("Running the put command\n");
 			//get filename
 			messageLength = sendto(sock, command, sizeof(command), 0,(struct sockaddr *) &remote, remote_length);
@@ -166,7 +167,7 @@ int main (int argc, char * argv[])
 		}
 
 		// Get file data and save it to client
-		else if (!strncmp(command,"get",3)){
+		else if (!strncmp(command,"get",3) && strlen(command)>=6){
 
 				printf("Runnning the get command \n");
 				//get filename for opening and saving the file
@@ -251,7 +252,7 @@ int main (int argc, char * argv[])
 		else if (!strncmp(command,"help",4)){
 			printUsage();
 		}else{
-			printf("Command not found. For a list of commands enter: help\n");
+			printf("Command not found or incorrect usage. Use \"help\" for a list of commands. \n");
 		}
 		//messageLength = sendto(sock, "ls", sizeof("ls"), 0,(struct sockaddr *) &remote, remote_length);
 		//messageLength = recvfrom(sock, &buffer, sizeof(buffer), 0, (struct sockaddr *) &remote, &remote_length);
